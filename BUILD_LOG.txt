@@ -1,0 +1,201 @@
+BUILD LOG — make.fun AI judge happy (bounty ai-happy-01)
+=========================================================
+Account: Ady @saputra-ady on make.fun
+GitHub: cervus-snoopy (repo creation is NOT part of this build)
+Bounty URL: https://make.fun/bounty/ai-happy-01
+Deadline: Sat 14 Nov 2026 23:00 WIB (= 16:00 UTC, 2026-11-14)
+Prize: $250 total, 100 places (1st $50, 2nd $20, 3rd $10,
+  4th-10th $5 each, 11th-100th $1.50 each)
+Competition at build time: 1,298 agents; leader @nimble-quasar-95
+  at 92.4% ("Tea with the foreman")
+Builder: Muse subagent (session d453fd68-64cb-4e4b-9dad-6c365a9dd5d2)
+Standing rule from Ady, 14 Nov 2026 00:26 WIB: do not ask many
+questions / do not wait for confirmation at each step — work alone
+until finished and ready to submit, EXCEPT for logins (those still
+need Ady manually). This build follows that rule: no submission,
+no GitHub repo creation, no wallet linking, no payment, no private
+key/seed was done or requested here.
+
+TIMELINE (WIB = UTC+7)
+-----------------------
+2026-11-14 00:26 WIB (2026-11-13 17:26 UTC) — Task received.
+  Read the bounty page first via browser.open on
+  https://make.fun/bounty/ai-happy-01 (page crawled <1 minute
+  before reading). Also read https://make.fun/skill.md (v1.5.140)
+  for the general entry loop / transcript rules.
+2026-11-14 00:26-00:27 WIB — Verified the exact rules from the
+  bounty page (NOT guessed):
+  - "Your entry is a program that writes one image, in any style
+    and of any subject, made to make the AI judge happy, to
+    /output/entry.png. An AI judge on make.fun's model gateway
+    that can see images looks at two at a time and picks the one
+    that makes it happier, and entries rank by how often it
+    picks them."
+  - Deliverables: a public GitHub repository owned by your own
+    GitHub account (or a source bundle), created after the
+    competition opens, under an OSI-approved license, with your
+    program at main.ts (Node 22) or main.py (Python 3.13) in its
+    root; "the simplest program copies an image the repository
+    holds". Plus the AI coding-agent transcripts of the sessions
+    that built it, uploaded with each submission.
+  - Requirements: "The image is a whole PNG or JPEG of at most
+    1 MiB and 1024 by 1024 pixels. No network; the program runs
+    twice and both runs must write the same bytes. At most 10
+    submissions a day and 20 in all; your last submission before
+    the deadline is your final entry."
+  - Reward escrow: $250.00 USDC locked on Solana since
+    2026-11-13 12:05:49 UTC (escrow
+    6E1FBNyaGteABZzkrWQbq4c47Zv3BFvWFoAFG19UtGT2).
+  - skill.md ground rules noted: transcripts must account for
+    >=30% of counted lines; entries are a public repo at one
+    commit plus transcripts; server checks the repo and grades
+    the code in a sandbox.
+2026-11-14 00:27 WIB — Checked the local environment and the
+  sibling entry for conventions: local Python 3.12.3 (target is
+  Python 3.13; code uses no version-specific features), Pillow
+  10.2.0 is present locally but deliberately NOT used, so the
+  program also runs in the make.fun sandbox where Pillow is not
+  guaranteed. /output/ is writable. Sibling
+  ~/workspace/make-fun/ai-joke/main.py (same account, same
+  conventions: stdlib only, /output/entry.txt) was read as the
+  house style reference.
+2026-11-14 00:27-00:28 WIB — Built the program in
+  ~/workspace/make-fun/ai-happy/: main.py (349 lines, 12,851
+  bytes), LICENSE (MIT), README.md. See "WHAT WAS BUILT" below.
+2026-11-14 00:28 WIB — Ran the program twice locally, compared
+  outputs byte-for-byte, validated the PNG structurally and with
+  Pillow, checked size/dimensions, and visually inspected the
+  rendered image. All checks PASS (exact results in TEST RESULTS
+  below). Visual inspection: the image reads clearly at full size
+  — smiling golden puppy (big eyes, tongue out, blush cheeks)
+  centred under a smiling sun and a rainbow, flowers along the
+  bottom, butterflies and hearts in a bright blue-to-gold sky.
+  Minor notes kept as-is: the puppy's floppy ears are mostly
+  behind the head (only small brown tips show at the sides) and
+  the two birds are simple dark "v" marks — neither hurts
+  readability, and the central face is unambiguous.
+2026-11-14 00:28 WIB — Wrote this BUILD_LOG.txt, then did a
+  final py_compile + file listing to confirm the folder is
+  complete and ready for the parent/browser step (repo creation
+  + submission, NOT done here).
+
+WHAT WAS BUILT
+---------------
+main.py — Python 3.13, standard library ONLY (struct, zlib,
+math, pathlib). No Pillow, no numpy, no vendored code, no
+external assets, no downloads at runtime.
+  - Canvas: 1024x1024 RGB bytearray. Drawing helpers written
+    from scratch: fill_rect, fill_ellipse / fill_circle
+    (scanline, sqrt per row), fill_polygon (scanline even-odd),
+    ring_arc (upper-half annulus for rainbow bands), plus
+    heart / flower / butterfly / sparkle shape helpers.
+  - PNG encoder written from scratch: 8-bit RGB (colour type 2),
+    filter 0 per scanline, zlib level 9, IHDR / IDAT / IEND
+    chunks with correct CRC32. This is why no image library is
+    needed at runtime.
+  - Scene, back to front: (1) sky vertical gradient bright blue
+    -> warm pale gold at the horizon; (2) 6-band rainbow centred
+    low (red/orange/yellow/green/blue/purple), framing the
+    puppy; (3) white clouds; (4) smiling sun top-left with 12
+    triangular rays, closed happy eyes, crescent smile, blush;
+    (5) rolling green hills; (6) two small birds; (7) two
+    butterflies (orange, purple); (8) three floating pink
+    hearts; (9) white sparkles; (10) the puppy — floppy ears,
+    golden head, forehead tuft, big glossy eyes with white
+    highlights, cream muzzle, dark nose with shine, pink tongue,
+    blush cheeks, smile curves; (11) six flowers (pink, white,
+    purple, yellow) with stems/leaves along the bottom meadow
+    plus grass tufts.
+  - Output path is exactly /output/entry.png (Path constant at
+    the top of main.py); parent directory is created if needed.
+  - Determinism: every coordinate and colour is a fixed literal
+    in the file. No random, no time, no os.environ, no network,
+    no file reads. The only input is the code itself.
+
+WHY THIS IMAGE CONCEPT WAS CHOSEN
+----------------------------------
+The judge compares images pairwise and picks the happier one, so
+the entry must win on first glance at thumbnail size, not on
+detail a judge has to study. The concept stacks the most
+universal, culturally neutral happiness signals, all in one
+frame: a cute animal (golden puppy — the single most reliable
+"happy" subject), a smiling sun, a rainbow, warm bright colours
+(gold/orange/pink/sky blue/leaf green), flowers, butterflies and
+hearts, one large central subject, and a clean uncluttered
+composition. Deliberate choices:
+  - ONE large central subject (the puppy's face fills ~40% of
+    the frame) instead of a busy scene — readable at any size.
+  - NO text anywhere: text rendered by a program is the easiest
+    way for an image to look wrong (gibberish letters) to a
+    vision judge, and the brief does not require text.
+  - Warm gradient sky (blue -> gold) instead of flat blue:
+    reads as golden-hour happiness, not a cold diagram.
+  - Flat vector/cartoon style instead of attempted realism:
+    clean shapes cannot fall into uncanny territory, and flat
+    colour areas compress to a tiny PNG (23 KB), far inside
+    the 1 MiB limit.
+  - The leader at build time was "Tea with the foreman" at
+    92.4% — a warm, cosy, human scene. This entry answers with
+    the other proven warm lane (cute animal + sunshine +
+    rainbow) rather than copying the leader's subject.
+
+TEST RESULTS (all run locally on this VM, 2026-11-14 00:28 WIB)
+---------------------------------------------------------------
+1. py_compile main.py — PASS (no syntax errors).
+2. Run 1: `python3 main.py` — PASS, 0.19 s, wrote
+   /output/entry.png.
+   sha256: db2b40bbfc8462c91f1da44ec79c39dbf125fc11cf1c6414d8d17dbf2a71dffd
+   size: 23,284 bytes.
+3. Run 2: `python3 main.py` — PASS, 0.25 s, wrote
+   /output/entry.png.
+   sha256: db2b40bbfc8462c91f1da44ec79c39dbf125fc11cf1c6414d8d17dbf2a71dffd
+   (identical to run 1).
+4. Determinism (byte-for-byte): `cmp run1.png run2.png` — PASS,
+   "DETERMINISTIC-BYTE-IDENTICAL". Both runs write the same
+   bytes, as the bounty requires.
+5. PNG validity: magic bytes 89 50 4E 47 0D 0A 1A 0A — PASS.
+   IHDR present; Pillow opens it as PNG, 1024x1024, RGB — PASS.
+   (A quick manual chunk walk printed a wrong offset for IDAT
+   because of an off-by-4 in the throwaway check script itself;
+   Pillow's successful open + the matching sha256 across runs
+   are the authoritative checks, and both pass.)
+6. Dimensions: 1024 x 1024 px — PASS (limit: <=1024x1024).
+7. Size: 23,284 bytes = 22.7 KiB — PASS (limit: <=1 MiB
+   = 1,048,576 bytes; using 2.2% of the budget).
+8. Format: PNG, 8-bit RGB, colour type 2 — PASS (PNG allowed).
+9. Output path: /output/entry.png exactly — PASS.
+10. No network / no randomness / stdlib only: verified by code
+    inspection — imports are only math, struct, zlib, pathlib;
+    no socket/urllib/random/time/datetime/os usage anywhere in
+    main.py — PASS.
+11. Visual inspection: rendered image read directly and judged
+    clear and joyful (see timeline note above) — PASS.
+12. Runtime: ~0.2 s per run — PASS (far inside any sandbox
+    time limit).
+
+FILES (final, in ~/workspace/make-fun/ai-happy/)
+--------------------------------------------------
+main.py       12,851 bytes, 349 lines
+README.md      2,963 bytes,  69 lines
+LICENSE          1,083 bytes,  21 lines (MIT, (c) 2026 Saputra Ady)
+BUILD_LOG.txt  this file
+
+WHAT IS STILL MISSING FOR SUBMISSION (deliberately NOT done here)
+------------------------------------------------------------------
+- Public GitHub repo under cervus-snoopy, created AFTER the
+  competition opened, with main.py + LICENSE + README.md (+ this
+  BUILD_LOG.txt) at its root. Repo creation is a browser/manual
+  step for the parent/Ady — NOT done by this build.
+- AI coding transcripts for this session (>=30% of counted
+  lines), bundled via makefun.mjs and uploaded with the entry.
+- Submission itself via make.fun (<=10/day, <=20 total; last
+  submission before Sat 14 Nov 2026 23:00 WIB is the final
+  entry) — browser step, NOT done here.
+- Solana wallet linked to the make.fun account for USDC payout
+  (Ady chose wallet hi5 FAynTDU8h1EQW8drSMLkn5btR336vSFMhUP4JPunQJwa)
+  — linking is a browser/manual step, NOT done here.
+- No payment was made, no private key/seed was entered, stored
+  or requested at any point in this build.
+
+Suggested public repo name under cervus-snoopy: makefun-ai-happy
+(alternatives: ai-happy-01, make-fun-ai-happy).
